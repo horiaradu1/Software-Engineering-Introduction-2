@@ -6,6 +6,9 @@ public class Model {
 
 	private Tile[][] contents; // All tiles.
 	private Tile emptyTile; // The empty space.
+	
+	private int moveCount; // The counter for the moves in a game
+	private int moveCountReminder; // The counter to hold the moves while shuffling
 
 	public Model(int rows, int cols) {
 		ROWS = rows;
@@ -30,6 +33,8 @@ public class Model {
 		// Set last tile face to null to mark empty space
 		emptyTile = contents[ROWS - 1][COLS - 1];
 		emptyTile.setFace(null);
+		
+		resetMoveCounter();
 	}
 
 	// Shuffle the tiles around to create a new game.
@@ -39,7 +44,9 @@ public class Model {
 		for (int i = 0; i < rand; i++) {
 			int r = (int) (Math.random() * ROWS);
 			int c = (int) (Math.random() * COLS);
+			moveCountReminder = moveCount;
 			moveTile(r, c);
+			moveCount = moveCountReminder;
 		}
 	}
 
@@ -58,6 +65,7 @@ public class Model {
 		// Check to see if this neighbour is on board and is empty.
 		if (isLegalRowCol(rNeighbor, cNeighbor) && contents[rNeighbor][cNeighbor] == emptyTile) {
 			exchangeTiles(r, c, rNeighbor, cNeighbor);
+			incrementMoveCounter();
 			return true;
 		}
 		return false;
@@ -98,12 +106,16 @@ public class Model {
 
 	public int getMoveCount() {
 		// TODO Auto-generated method stub
-		return 0;
+		return moveCount;
 	}
 	
 	public void resetMoveCounter() {
 		// TODO Auto-generated method stub
-		
+		moveCount = 0;
+	}
+	
+	public void incrementMoveCounter() {
+		moveCount += 1;
 	}
 
 }
