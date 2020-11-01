@@ -19,13 +19,18 @@ public class GUI extends JPanel {
 	private GraphicsPanel puzzleGraphics;
 	private int ROWS;
 	private int COLS;
-	JLabel currentMovesLabel;
+	static JLabel currentMovesLabel;
 
 	public GUI(int rows, int cols) {
 		// Create a button. Add a listener to it.
 		JButton newGameButton = new JButton("New Game");
 		newGameButton.addActionListener(new NewGameAction());
 
+		// Create move counter components
+		JLabel moveCounterLabel = new JLabel("Moves: ", JLabel.LEADING);
+		currentMovesLabel = new JLabel("_", JLabel.CENTER);
+		currentMovesLabel.setText(String.valueOf("0"));
+		
 		// Create control panel
 		JPanel controlPanel = new JPanel();
 		controlPanel.setLayout(new FlowLayout());
@@ -36,11 +41,18 @@ public class GUI extends JPanel {
 		COLS = cols;
 		puzzleModel = new Model(ROWS, COLS);
 		puzzleGraphics = new GraphicsPanel(puzzleModel, rows, cols);
+		
+		// Create move counter panel
+		JPanel gameMoveCounterPanel = new JPanel();
+		gameMoveCounterPanel.setLayout(new FlowLayout());
+		gameMoveCounterPanel.add(moveCounterLabel);
+		gameMoveCounterPanel.add(currentMovesLabel);
 
 		// Set the layout and add the components
 		this.setLayout(new BorderLayout());
 		this.add(controlPanel, BorderLayout.NORTH);
 		this.add(puzzleGraphics, BorderLayout.CENTER);
+		this.add(gameMoveCounterPanel, BorderLayout.SOUTH);
 	}
 
 	Model getPuzzleModel() {
@@ -57,6 +69,9 @@ public class GUI extends JPanel {
 			puzzleModel.shuffle();
 			puzzleGraphics.repaint();
 			puzzleGraphics.setBackground(Color.black);
+			currentMovesLabel.setText(String.valueOf("0"));
+			
+			
 		}
 	}
 }
