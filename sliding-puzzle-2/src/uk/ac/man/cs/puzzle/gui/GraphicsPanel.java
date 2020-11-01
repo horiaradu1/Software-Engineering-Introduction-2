@@ -74,6 +74,8 @@ public class GraphicsPanel extends JPanel implements MouseListener {
 		if (puzzleModel.gameOver()) {
 			this.setBackground(Color.green);
 		}
+		
+		GUI.currentMovesLabel.setText(String.valueOf(puzzleModel.getMoveCount()));
 	}
 
 	// Ignore these events
